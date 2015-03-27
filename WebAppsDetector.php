@@ -1,1 +1,0 @@
-/home/jirka/public_html/inveostore.com/blog/wp-content/plugins/wp-integration/WebAppsDetector.php
