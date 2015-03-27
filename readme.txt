@@ -1,0 +1,66 @@
+=== WP Integration ===
+Contributors: inveo
+Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, prestashop, integration, connector, store, sales, sell, shop, shopping, cart, checkout,
+Requires at least: 2.7
+Tested up to: 4.1.1
+Stable tag: 1.3.01
+License: LGPLv2.1
+License URI: http://www.gnu.org/licenses/lgpl-2.1.html
+
+== Description ==
+
+This plugin will **fully integrate** your WordPress with no compromises into any web application supported by the Theme Provider module.
+
+Currently supported web apps: **PrestaShop 1.3/1.4/1.5/1.6** (excellent eCommerce store)
+
+You need to install the **Theme Provider** module on your ecommerce website to use this plugin : [http://www.inveostore.com/wp-theme-providers](http://www.inveostore.com/wp-theme-providers "PrestaShop ThemeProvider")
+
+Features:
+
+* Integrates WordPress to PrestaShop just with a simple click
+* Automatically adjusts the WordPress CSS selectors (restricts the WordPress styles only to the WordPress)
+* 100% compatibility with other WordPress plugins
+* Editing of the WordPress or PrestaShop template files not required
+* Produces a valid (X)HTML source code
+
+== Installation ==
+
+1. Install the plugin like you always install them, either by uploading it via FTP or by using the "Add Plugin" function of WordPress.
+2. Activate the plugin at the plugin administration page.
+3. Open the plugin configuration page, which is located under Settings -> WP Integration and setup the API key.
+
+== Frequently Asked Questions ==
+
+= What do I have to install to PrestaShop? =
+
+You have to download the [PrestaShop ThemeProvider](http://www.inveostore.com/wp-theme-providers "ThemeProvider module") created by the same author of this plugin.
+
+= Where do I have to install WordPress in order to integrate it into the host app (PrestaShop)? =
+
+In a sub directory of the host web application (the application you want to integrate your WordPress with) such as a **/blog/** or **/news/**.
+
+== Screenshots ==
+
+1. The configuration screen of the plugin
+
+== Changelog ==
+
+= 1.3.01 =
+* Wizard which guides user through the setup process was improved
+
+= 1.3.00 =
+* Option to enable and disable the adjustment of internal & external CSS files
+* Option to enable experimental features
+
+= 1.2.00 =
+* Shared runtime mode added
+
+= 1.1.00 =
+* Direct cache access mode added
+
+= 1.0.00 =
+* Initial release with Isolated runtime mode
+
+== License ==
+
+This plugin is free for everyone! Since it is released under the LGPL, which means you can use it free of charge on your personal or commercial blog. But in order to enjoy the full functionality of this plugin, you will need to buy the Theme Provider module for the web app you want to integrate your WordPress with.
