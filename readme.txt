@@ -2,42 +2,42 @@
 Contributors: inveo
 Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, prestashop, integration, connector, store, sales, sell, shop, shopping, cart, checkout,
 Requires at least: 2.7
-Tested up to: 4.1.1
-Stable tag: 1.3.01
+Tested up to: 4.2
+Stable tag: 1.4.01
 License: LGPLv2.1
 License URI: http://www.gnu.org/licenses/lgpl-2.1.html
 
 == Description ==
 
-This plugin will **fully integrate** your WordPress with no compromises into any web application supported by the Theme Provider module.
+This plugin will **fully integrate** your WordPress **for free** with no compromises into any web application supported by the Theme Provider module.
 
 Currently supported web apps: **PrestaShop 1.3/1.4/1.5/1.6** (excellent eCommerce store)
 
-You need to install the **Theme Provider** module on your ecommerce website to use this plugin : [http://www.inveostore.com/wp-theme-providers](http://www.inveostore.com/wp-theme-providers "PrestaShop ThemeProvider")
+You need to install a free or paid **Theme Provider** module on your ecommerce website to use this plugin: [http://www.inveostore.com/wp-theme-providers](http://www.inveostore.com/wp-theme-providers "PrestaShop Theme Provider")
 
 Features:
 
-* Integrates WordPress to PrestaShop just with a simple click
-* Automatically adjusts the WordPress CSS selectors (restricts the WordPress styles only to the WordPress)
+* Integrates WordPress to PrestaShop with a simple click
+* Automatically adjusts WordPress CSS selectors (restricts WordPress styles only to the WordPress)
 * 100% compatibility with other WordPress plugins
 * Editing of the WordPress or PrestaShop template files not required
 * Produces a valid (X)HTML source code
 
 == Installation ==
 
-1. Install the plugin like you always install them, either by uploading it via FTP or by using the "Add Plugin" function of WordPress.
+1. Install the plugin as you always install them, either by uploading it via FTP or by using the "Add Plugin" function of the WordPress.
 2. Activate the plugin at the plugin administration page.
 3. Open the plugin configuration page, which is located under Settings -> WP Integration and setup the API key.
 
 == Frequently Asked Questions ==
 
-= What do I have to install to PrestaShop? =
+= What do I have to install to the PrestaShop? =
 
-You have to download the [PrestaShop ThemeProvider](http://www.inveostore.com/wp-theme-providers "ThemeProvider module") created by the same author of this plugin.
+You have to download the [PrestaShop Theme Provider](http://www.inveostore.com/wp-theme-providers "PrestaShop Theme Provider module") module created by the same author of this plugin. This module is available in both, free and paid versions.
 
 = Where do I have to install WordPress in order to integrate it into the host app (PrestaShop)? =
 
-In a sub directory of the host web application (the application you want to integrate your WordPress with) such as a **/blog/** or **/news/**.
+In a sub directory of the host web application (the application you want to integrate your WordPress with) such as **/blog/** or **/news/**.
 
 == Screenshots ==
 
@@ -45,8 +45,15 @@ In a sub directory of the host web application (the application you want to inte
 
 == Changelog ==
 
+= 1.4.01 =
+* WP 4.2 stable tag
+* Theme Provider module updated to 1.3.01
+
+= 1.4.00 =
+* Theme Provider Free module support finally added!
+
 = 1.3.01 =
-* Wizard which guides user through the setup process was improved
+* A wizard that guides users through the setup process was improved
 
 = 1.3.00 =
 * Option to enable and disable the adjustment of internal & external CSS files
@@ -63,4 +70,4 @@ In a sub directory of the host web application (the application you want to inte
 
 == License ==
 
-This plugin is free for everyone! Since it is released under the LGPL, which means you can use it free of charge on your personal or commercial blog. But in order to enjoy the full functionality of this plugin, you will need to buy the Theme Provider module for the web app you want to integrate your WordPress with.
+This plugin is free for everyone! It is released under the LGPL, which means you can use it free of charge on your personal or commercial blog. But in order to enjoy the full functionality of this plugin, you need to download the Theme Provider module for the web app you want to integrate your WordPress with.

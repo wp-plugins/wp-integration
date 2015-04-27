@@ -7,17 +7,19 @@
 
 /** @class: WebAppsDetector
   * @project: Theme Provider
-  * @date: 2015-03-14
+  * @date: 2015-03-28
   * @compatibility: PHP 5 >= 5.0.0
-  * @version: 1.0.6
+  * @version: 1.1.0
   */
 class WebAppsDetector
 {
 	const PROVIDER_FILE = 'ThemeProvider.php';
+	const PROVIDER_FILE_LITE = 'ThemeProviderFree.php';
 
 	private static $_appFound = false;
 	private static $_appName = 'host web application';
 	private static $_appNameAbbr = 'web app';
+	private static $_providerAdvance = true;
 	private static $_providerPath = '';
 	private static $_providerFilePath = '';
 	private static $_providerFound = false;
@@ -51,9 +53,17 @@ class WebAppsDetector
 			if(file_exists(self::_makeFsPath(self::PROVIDER_FILE, $path)))
 			{
 				self::$_providerFound = true;
+				self::$_providerAdvance = true;
 				self::$_providerFilePath = self::_makeFsPath(self::PROVIDER_FILE, $path);
-				return true;
 			}
+			elseif(file_exists(self::_makeFsPath(self::PROVIDER_FILE_LITE, $path)))
+			{
+				self::$_providerFound = true;
+				self::$_providerAdvance = false;
+				self::$_providerFilePath = self::_makeFsPath(self::PROVIDER_FILE_LITE, $path);
+			}
+			if(self::$_providerFound)
+				return true;
 			return false;
 		}
 		return false;
@@ -67,6 +77,11 @@ class WebAppsDetector
 	public static function providerFound()
 	{
 		return self::$_providerFound;
+	}
+	
+	public static function providerIsAdvance()
+	{
+		return self::$_providerAdvance;
 	}
 
 	public static function getPath()
