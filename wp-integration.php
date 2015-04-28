@@ -10,7 +10,7 @@
  * Plugin Name: WP Integration
  * Plugin URI: http://www.inveostore.com
  * Description: Integrates Wordpress to any application with just one simple click.
- * Version: 1.4.02
+ * Version: 1.4.03
  * Author: Inveo s.r.o.
  * Author URI: http://www.inveostore.com
  * License: LGPLv2.1
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'WebAppsDetector.php');
 WebAppsDetector::initStatic(dirname(dirname(dirname(dirname(__FILE__)))));
 
 define('THEMEPROVIDER_CONN_LOADED', true);
-define('THEMEPROVIDER_CONN_VERSION', '1.4.02');
+define('THEMEPROVIDER_CONN_VERSION', '1.4.03');
 define('THEMEPROVIDER_CONN_REQVERSION', '1.3.00');
 define('THEMEPROVIDER_CONN_APP', 'WordPress');
 define('THEMEPROVIDER_CONN_APPABBR', 'WP');
@@ -43,7 +43,6 @@ if(defined('THEMEPROVIDER_INIT'))
 		extends ThemeProviderConnectorCore
 			implements ThemeProviderConnectorInterface
 			{
-
 				public static function init($parseHtml)
 				{
 					$options = Wpcon::getOptions();
@@ -74,9 +73,7 @@ if(defined('THEMEPROVIDER_INIT'))
 		}
 
 	if(isset($_GET[strtolower(THEMEPROVIDER_CONN_APP).'_constyle']) && WebAppsDetector::providerIsAdvance())
-	{
 		add_action('init', array('Wpcon', 'wpCss'));
-	}
 
 }
 
@@ -120,9 +117,7 @@ if (is_admin()) // admin actions
 							{
 								add_action('admin_notices', array('Wpcon', 'allok_provider'));
 								if(!WebAppsDetector::providerIsAdvance())
-								{
 									add_action('admin_notices', array('Wpcon', 'no_advance'));
-								}
 							}
 						}
 					}
@@ -170,9 +165,7 @@ class Wpcon {
 		if(!isset(self::$_settings))
 			self::$_settings = get_option(self::$_optionName);
 		if(!WebAppsDetector::providerIsAdvance())
-		{
 			self::$_settings['mode'] = 1;
-		}
 		return self::$_settings;
 	}
 
@@ -277,9 +270,9 @@ class Wpcon {
 		// get_current_screen() since WP 3.1
 		if(version_compare(get_bloginfo('version'), '3.3', '>='))
 		{
-			$overview = '<p>' . __('API security key is required, otherwise the', 'wpcon') . ' ' . THEMEPROVIDER_CONN_APP . ' ' . __('integration to', 'wpcon') . ' ' . WebAppsDetector::getName() . ' ' . __('will not work.', 'wpcon') . '</p>' .
+			$overview = '<p>' . sprintf(__('API security key is required, otherwise the %1$s integration to %2$s will not work.</p>', 'wpcon'), THEMEPROVIDER_CONN_APP, WebAppsDetector::getName()) .
 			'<p>' . __('If you are in doubts about the Mode to choose, we recommend going with the Direct cache access mode.', 'wpcon') . '</p>' .
-			'<p>' . __('You must click the Save Changes button at the bottom of the screen for the new settings to come into effect.', 'wpcon') . '</p>';
+			'<p>' . __('You must click the Save Changes button at the bottom of the screen for the new settings to come into effect.', 'wpcon');
 			
 			$about = '<p>'.__('Inveo can create a fast, secure and highly reliable ecommerce site with a high degree of variability, or a user-friendly website featuring modern graphic design that will enhance your prestige.', 'wpcon') . '</p>'.
 			'<p>'.__('copyright', 'wpcon').' (c) 2012-'.date('Y').' Inveo s.r.o., <a href="http://www.inveoglobal.com/">www.inveoglobal.com</a></p>'.
@@ -288,28 +281,38 @@ class Wpcon {
 			get_current_screen()->add_help_tab(
 							array(
 									'id'      => 'overview',
-									'title'   => __('Overview'),
+									'title'   => __('Overview', 'wpcon'),
 									'content' => $overview,
 								)
 							);
 			get_current_screen()->add_help_tab(
 							array(
 									'id'      => 'about',
-									'title'   => __('About'),
+									'title'   => __('About', 'wpcon'),
 									'content' => $about,
 								)
 							);
 			get_current_screen()->set_help_sidebar(
-								'<p><strong>' . __('For more information:') . '</strong></p>' .
-								'<p>' . __('<a href="http://www.inveostore.com/">Inveostore.com</a>') . '</p>' .
-								'<p>' . __('<a href="http://www.inveostore.com/community/">Support Forums</a>') . '</p>'
+								'<p><strong>' . __('For more information:', 'wpcon') . '</strong></p>' .
+								'<p><a href="http://www.inveostore.com/">' . __('Inveostore.com', 'wpcon') . '</a></p>' .
+								'<p><a href="http://www.inveostore.com/community/">' . __('Support Forums', 'wpcon') . '</a></p>'
 							);
 		}
 	}
 
 	public static function settings_link($links)
 	{
-		array_unshift($links, '<a href="options-general.php?page=wpcon_plugin">'.__('Settings', 'wpcon').'</a>'); 
+		if(defined('THEMEPROVIDER_INIT') && !WebAppsDetector::providerIsAdvance())
+			array_unshift(
+				$links,
+				'<a href="http://www.inveostore.com/theme-providers-advanced">'.__('Upgrade features', 'wpcon').' &raquo;</a>'
+			);
+		
+		array_unshift(
+			$links,
+			'<a href="options-general.php?page=wpcon_plugin">'.__('Settings', 'wpcon').'</a>'
+		);
+		
 		return $links; 
 	}
 	
@@ -351,37 +354,53 @@ class Wpcon {
 	
 	public static function no_supported_app()
 	{
-		echo self::_error_message(__('No supported web application was found. Please make sure the', 'wpcon').' '.THEMEPROVIDER_CONN_APP.' '.__('is installed in a subdirectory such as ', 'wpcon').' <strong>/blog/</strong>'.' '.__('or', 'wpcon').' <strong>/news/</strong> '.__('(/public_html/blog/ or /public_html/news/ directory on the FTP).', 'wpcon'));
+		echo self::_error_message(
+					sprintf(
+						__('No supported web application was found. Please make sure the %1$s is installed in a subdirectory such as %2$s or %3$s (%4$s or %5$s directory on the FTP).', 'wpcon'),
+						THEMEPROVIDER_CONN_APP,
+						'<strong>/blog/</strong>',
+						'<strong>/news/</strong>',
+						'/public_html/blog/',
+						'/public_html/news/'
+						)
+					);
 	}
 
 	public static function no_theme_provider()
 	{
-		echo self::_error_message(__('As the last step please download and install the appropriate', 'wpcon').' <a href="uire 100% sandboxed runtime environm">'.__('Theme provider', 'wpcon').'</a> '.__('module.', 'wpcon'));
+		echo self::_error_message(sprintf(__('As the last step please download and install the appropriate <a href="%s">Theme provider</a> module.', 'wpcon'), 'http://www.inveostore.com/theme-providers'));
 	}
 	
 	public static function no_active_theme_provider()
 	{
-		echo self::_error_message(__('The', 'wpcon').' '.WebAppsDetector::getName().' '.__('Theme Provider module is not activated!', 'wpcon'));
+		echo self::_error_message(sprintf(__('The %s Theme Provider module is not activated!', 'wpcon'), WebAppsDetector::getName()));
 	}
 	
 	public static function no_required_provider()
 	{
-		echo self::_error_message(__('The', 'wpcon').' '.WebAppsDetector::getName().' '.__('Theme Provider module version is too old!', 'wpcon'));
+		echo self::_error_message(sprintf(__('The %s Theme Provider module version is too old!', 'wpcon'), WebAppsDetector::getName()));
 	}
 
 	public static function no_loaded_provider()
 	{
-		echo self::_error_message(__('The', 'wpcon').' '.WebAppsDetector::getName().' '.__('Theme Provider module was not loaded.', 'wpcon'));
+		echo self::_error_message(sprintf(__('The %s Theme Provider module was not loaded.', 'wpcon'), WebAppsDetector::getName()));
 	}
 	
 	public static function allok_provider()
 	{
-		echo self::_success_notice(__('The', 'wpcon').' '.WebAppsDetector::getName().' '.__('Theme Provider module is connected!', 'wpcon'));
+		echo self::_success_notice(sprintf(__('The %s Theme Provider module is connected!', 'wpcon'), WebAppsDetector::getName()));
 	}
 	
 	public static function no_advance()
 	{
-		echo self::_error_message(WebAppsDetector::getName().' '.__('Theme Provider Free does not come with a full feature set. <a href="http://www.inveostore.com/theme-providers-advanced">Change now &raquo;</a>', 'wpcon'));
+		echo self::_error_message(
+						sprintf(
+							__('To enable all features, upgrade to the paid <a href="%1$s">%2$s Theme Provider module %3$s</a>', 'wpcon'),
+							'http://www.inveostore.com/theme-providers-advanced',
+							WebAppsDetector::getName(),
+							'&raquo;'
+						)
+					);
 	}
 
 	public static function found_provider()
@@ -442,9 +461,33 @@ class Wpcon {
 	});
 //]]>
 </script>
+<style type="text/css">
+.wpcon-notice {
+	margin: 5px 0 15px;
+	background: #ffffe1;
+	border-left: 4px solid #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	padding: 1px 12px;
+}
+
+.wpcon-notice p {
+	margin: .5em 0 !important;
+	padding: 2px;
+	font-size: 13px !important;
+	line-height: 1.5;
+}
+
+.wpcon-notice {
+	border-color: #dd3d36;
+}
+.wpcon-warning {
+	border-color: #ffba00;
+}
+</style>
 
 <div class="wrap">
-<h2><?php echo THEMEPROVIDER_CONN_NAME.(WebAppsDetector::appFound() ? ' '.__('to', 'wpcon').' '.WebAppsDetector::getName() : ''); ?></h2>
+<h2><?php echo THEMEPROVIDER_CONN_NAME.(WebAppsDetector::appFound() ? sprintf(__(' to %s', 'wpcon'), WebAppsDetector::getName()) : ''); ?></h2>
 <form method="post" action="options.php" novalidate="novalidate">
 <?php
 
@@ -469,36 +512,34 @@ settings_fields('wpcon_options-group');
 $modes = Wpcon::modes();
 $radioAr = array();
 foreach($modes as $mid => $mname)
-{
 	$radioAr[] = '<label><input name="wpcon_options[mode]" type="radio" value="'.(int)$mid.'" id="wpcon_mode'.$mid.'" '.checked($mid, $options['mode'], false).' '.disabled(($mid != 1 && !WebAppsDetector::providerIsAdvance()), true, false).' class="wpcon_mode" />'.__($mname['name'], 'wpcon').' <strong>'.__($mname['desc'], 'wpcon').'</strong></label>';
-}
 echo implode('<br />'."\n", $radioAr);
 
 ?>
 </p></fieldset>
 
 <p class="description" id="wpcon_mode1_desc" <?php echo ($options['mode'] != 1) ? 'style="display:none"' : ''; ?>><?php
-echo __('Isolated runtime mode provides moderate performance, features perfect compatibility and keeps ', 'wpcon').
-' '.THEMEPROVIDER_CONN_APP.' '.__('and', 'wpcon').' '.WebAppsDetector::getName().' '.__('in a completely sandboxed runtime environment.', 'wpcon').
-' '.__('We recommend that you activate this mode only if you require 100% sandboxed runtime environment of', 'wpcon').
-' '.THEMEPROVIDER_CONN_APP.' '.__('and', 'wpcon').' '.WebAppsDetector::getName().'.';
+printf(__('Isolated runtime mode provides moderate performance, features perfect compatibility and keeps '.
+' %1$s and %2$s in a completely sandboxed runtime environment.'.
+' We recommend that you activate this mode only if you require 100%% sandboxed runtime environment of'.
+' %1$s and %2$s.', 'wpcon'), THEMEPROVIDER_CONN_APP, WebAppsDetector::getName());
 ?></p>
 
 <p class="description" id="wpcon_mode2_desc" <?php echo ($options['mode'] != 2) ? 'style="display:none"' : ''; ?>><?php
-echo __('Direct cache access mode provides excellent performance, features very good compatibility but requires a limited amount of the', 'wpcon').
-' '.WebAppsDetector::getName().' '.__('core to be loaded and executed in the same runtime environment to enable a direct cache access of the', 'wpcon').
-' '.WebAppsDetector::getName().' '.__('Theme Provider Module.', 'wpcon').
-' '.__('We recommend that you activate this mode if you require a blazing-fast performance of', 'wpcon').
-' '.THEMEPROVIDER_CONN_APP.'.';
+printf(__('Direct cache access mode provides excellent performance, features very good compatibility but requires a limited amount of the'.
+' %1$s core to be loaded and executed in the same runtime environment to enable a direct cache access of the'.
+' %1$s Theme Provider Module.'.
+' We recommend that you activate this mode if you require a blazing-fast performance of'.
+' %2$s.', 'wpcon'), WebAppsDetector::getName(), THEMEPROVIDER_CONN_APP);
 ?></p>
 
 <p class="description" id="wpcon_mode3_desc" <?php echo ($options['mode'] != 3) ? 'style="display:none"' : ''; ?>><?php
-echo __('Shared runtime provides very good performance, features good compatibility and does not need any caching but it requires the entire', 'wpcon').
-' '.WebAppsDetector::getName().' '.__('core to be loaded and executed in the same runtime environment.'.
+printf(__('Shared runtime provides very good performance, features good compatibility and does not need any caching but it requires the entire'.
+' %s core to be loaded and executed in the same runtime environment.'.
 ' We used many advanced programming techniques to keep the runtime environment safe &amp; stable under such conditions.'.
-' We recommend that you activate this mode if you do not want to use any caching and want to get the best user experience.', 'wpcon');
+' We recommend that you activate this mode if you do not want to use any caching and want to get the best user experience.', 'wpcon'), WebAppsDetector::getName());
 ?></p>
-
+<br /><div class="wpcon-notice"><p><?php _e('Changing this option will significantly improve performance and user experience.', 'wpcon'); ?></p></div>
 </td>
 </tr>
 </table>
@@ -509,29 +550,30 @@ echo __('Shared runtime provides very good performance, features good compatibil
 <td><fieldset><legend class="screen-reader-text"><span><?php _e('Adjust CSS stylesheets', 'wpcon') ?></span></legend>
 <label for="wpcon_internalcss">
 <input name="wpcon_options[internalcss]" type="checkbox" id="wpcon_internalcss" value="1" <?php checked('1', $options['internalcss']); ?> <?php  disabled(WebAppsDetector::providerIsAdvance(), false); ?> />
-<?php _e('Internal Cascading Style Sheets (CSS inside the <code>&lt;style&gt;</code> tag)'); ?></label>
+<?php printf(__('Internal Cascading Style Sheets (CSS inside the %s tag)', 'wpcon'), '<code>&lt;style&gt;</code>'); ?></label>
 <br />
 <label for="wpcon_externalcss"><input name="wpcon_options[externalcss]" type="checkbox" id="wpcon_externalcss" value="1" <?php checked('1', $options['externalcss']); ?> <?php  disabled(WebAppsDetector::providerIsAdvance(), false); ?> />
-<?php _e('External Cascading Style Sheets (CSS referenced with the <code>&lt;link&gt;</code> tag)', 'wpcon'); ?></label>
+<?php printf(__('External Cascading Style Sheets (CSS referenced with the %s tag)', 'wpcon'), '<code>&lt;link&gt;</code>'); ?></label>
 </fieldset>
-<p class="description"><?php _e('Automatically prepends on-the-fly all selectors with', 'wpcon'); echo ' <code>#'.strtolower(THEMEPROVIDER_CONN_APP).'</code> '; _e('and restricts styles (including those referenced by <code>@import</code> at-rule) only to', 'wpcon'); echo ' '.THEMEPROVIDER_CONN_APP.' ';  _e('elements.', 'wpcon'); ?><br /><?php _e('Supports CSS 1, 2, 2.1 &amp; 3 or any later backward compatible CSS version.', 'wpcon') ?><br /><br /><strong><?php _e('Enable these options to resolve CSS issues &amp; conflicting styles.', 'wpcon') ?></strong></p>
+<p class="description "><?php printf(__('Automatically prepends on-the-fly all selectors with %1$s and restricts styles (including those referenced by %2$s at-rule) only to %3$s elements.', 'wpcon'), '<code>#'.strtolower(THEMEPROVIDER_CONN_APP).'</code>', '<code>@import</code>', THEMEPROVIDER_CONN_APP); ?><br /><?php __('Supports CSS 1, 2, 2.1 &amp; 3 or any later backward compatible CSS version.', 'wpcon') ?></p>
+<br /><div class="wpcon-notice"><p><?php printf(__('Enabling these options will instantly fix the design issues and the page layout of any %s template (it will resolve the CSS issues &amp; conflicting styles).', 'wpcon'), THEMEPROVIDER_CONN_APP); ?></p></div>
 </td>
 </tr>
 </table>
 <hr />
 <table class="form-table">
 <tr>
-<th scope="row"><?php _e('Monkey patching ', 'wpcon') ?></th>
-<td><fieldset><legend class="screen-reader-text"><span><?php _e('Monkey patching ', 'wpcon') ?></span></legend>
+<th scope="row"><?php _e('Monkey patching ', 'wpcon'); ?></th>
+<td><fieldset><legend class="screen-reader-text"><span><?php _e('Monkey patching ', 'wpcon'); ?></span></legend>
 <label for="wpcon_experimental">
 <input name="wpcon_options[experimental]" type="checkbox" id="wpcon_experimental" value="1" <?php checked('1', $options['experimental']); ?> <?php  disabled(WebAppsDetector::providerIsAdvance(), false); ?> />
-<?php _e('Enable'); ?></label>
+<?php _e('Enable', 'wpcon'); ?></label>
 </fieldset>
 <p class="description"><?php
 echo __('Turns on support for extensions affecting PHP\'s behaviour, which may help resolve certain issues.', 'wpcon').
 '<br />'.__('Supported extensions: ', 'wpcon').' <a href="http://php.net/manual/intro.uopz.php">uopz</a>, <a href="http://php.net/manual/intro.runkit.php">runkit</a>.'.
-'<br /><br /><strong>'.__('Enable this option to improve the compatibility.', 'wpcon').'</strong>';
-?></p>
+'</p><br /><div class="wpcon-notice"><p>'.__('Enabling this option may improve the compatibility.', 'wpcon').'</p></div>';
+?>
 </td>
 </tr>
 
@@ -545,7 +587,7 @@ submit_button();
 <hr />
 
 <p style="text-align: right">
-copyright &copy; 2012-<?php echo date('Y') ?> Inveo s.r.o.
+copyright &copy; 2012-<?php echo date('Y'); ?> Inveo s.r.o.
 <br /><?php _e('Modules &amp; plugins:', 'wpcon'); ?> <a href="http://www.inveostore.com">www.inveostore.com</a> | <?php _e('eCommerce Services:', 'wpcon'); ?> <a href="http://www.inveoglobal.com">www.inveoglobal.com</a>
 <br />
 <?php echo THEMEPROVIDER_CONN_NAME.' v'.THEMEPROVIDER_CONN_VERSION; ?>
