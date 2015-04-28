@@ -10,7 +10,7 @@
  * Plugin Name: WP Integration
  * Plugin URI: http://www.inveostore.com
  * Description: Integrates Wordpress to any application with just one simple click.
- * Version: 1.4.01
+ * Version: 1.4.02
  * Author: Inveo s.r.o.
  * Author URI: http://www.inveostore.com
  * License: LGPLv2.1
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'WebAppsDetector.php');
 WebAppsDetector::initStatic(dirname(dirname(dirname(dirname(__FILE__)))));
 
 define('THEMEPROVIDER_CONN_LOADED', true);
-define('THEMEPROVIDER_CONN_VERSION', '1.4.01');
+define('THEMEPROVIDER_CONN_VERSION', '1.4.02');
 define('THEMEPROVIDER_CONN_REQVERSION', '1.3.00');
 define('THEMEPROVIDER_CONN_APP', 'WordPress');
 define('THEMEPROVIDER_CONN_APPABBR', 'WP');
@@ -44,7 +44,7 @@ if(defined('THEMEPROVIDER_INIT'))
 			implements ThemeProviderConnectorInterface
 			{
 
-				public static function init($parseHtml = true)
+				public static function init($parseHtml)
 				{
 					$options = Wpcon::getOptions();
 					if(parent::$__revision < 3 || empty($options['apikey']))
@@ -178,7 +178,7 @@ class Wpcon {
 
 	public static function wpInit()
 	{
-		ThemeProviderConnector::init();
+		ThemeProviderConnector::init(true);
 	}
 
 	public static function wpCss()
