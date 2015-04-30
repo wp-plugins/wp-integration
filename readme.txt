@@ -46,7 +46,7 @@ In a sub directory of the host web application (the application you want to inte
 == Changelog ==
 
 = 1.4.04 =
-* Support for update notices of the Theme Provider module added
+* Support for update notices of the Theme Provider module was added
 * WebAppsDetector class was updated
 * Theme Provider module was updated to 1.4.01
 
