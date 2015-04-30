@@ -10,7 +10,7 @@
  * Plugin Name: WP Integration
  * Plugin URI: http://www.inveostore.com
  * Description: Integrates Wordpress to any application with just one simple click.
- * Version: 1.4.03
+ * Version: 1.4.04
  * Author: Inveo s.r.o.
  * Author URI: http://www.inveostore.com
  * License: LGPLv2.1
@@ -84,6 +84,9 @@ if (is_admin()) // admin actions
 	if(version_compare(get_bloginfo('version'), '2.7', '>='))
 	{
 		add_action('admin_init', array('Wpcon', 'admin'));
+		
+		if(WebAppsDetector::appFound() && WebAppsDetector::providerFound() && (basename($_SERVER['SCRIPT_NAME']) == 'plugins.php' || $_GET['page'] == 'wpcon_plugin') && version_compare(THEMEPROVIDER_VERSION, WebAppsDetector::getLatest(), '<'))
+			add_action('admin_notices', array('Wpcon', 'update_found'));
 
 		if(isset($_GET['page']) && $_GET['page'] == 'wpcon_plugin')
 		{
@@ -389,6 +392,11 @@ class Wpcon {
 	public static function allok_provider()
 	{
 		echo self::_success_notice(sprintf(__('The %s Theme Provider module is connected!', 'wpcon'), WebAppsDetector::getName()));
+	}
+	
+	public static function update_found()
+	{
+		echo self::_error_message(sprintf(__('An update of the %s Theme Provider module has been found - please update!', 'wpcon'), WebAppsDetector::getName()));
 	}
 	
 	public static function no_advance()

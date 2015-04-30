@@ -9,7 +9,7 @@
   * @project: Theme Provider
   * @date: 2015-03-28
   * @compatibility: PHP 5 >= 5.0.0
-  * @version: 1.1.0
+  * @version: 1.1.1
   */
 class WebAppsDetector
 {
@@ -19,6 +19,7 @@ class WebAppsDetector
 	private static $_appFound = false;
 	private static $_appName = 'host web application';
 	private static $_appNameAbbr = 'web app';
+	private static $_appLatest = '';
 	private static $_providerAdvance = true;
 	private static $_providerPath = '';
 	private static $_providerFilePath = '';
@@ -34,6 +35,7 @@ class WebAppsDetector
 						array(
 							'name' => 'PrestaShop',
 							'abbr' => 'PS',
+							'latest' => '1.4.00',
 							'path' => 'modules/psthemeprovider',
 							'files' => array('config/settings.inc.php', 'config/defines.inc.php')
 						)
@@ -48,6 +50,7 @@ class WebAppsDetector
 			self::$_appFound = true;
 			self::$_appName = $provider['name'];
 			self::$_appNameAbbr = $provider['abbr'];
+			self::$_appLatest = $provider['latest'];
 			self::$_providerPath = $provider['path'];
 			$path = str_replace('/' , DIRECTORY_SEPARATOR, $provider['path']);
 			if(file_exists(self::_makeFsPath(self::PROVIDER_FILE, $path)))
@@ -102,6 +105,11 @@ class WebAppsDetector
 	public static function getNameAbbr()
 	{
 		return self::$_appNameAbbr;
+	}
+	
+	public static function getLatest()
+	{
+		return self::$_appLatest;
 	}
 	
 	private static function _makeFsPath($file, $path = '')
