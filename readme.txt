@@ -46,7 +46,7 @@ In a sub directory of the host web application (the application you want to inte
 == Changelog ==
 
 = 1.4.05 =
-* PHP notice fixed
+* PHP notice was fixed
 * WebAppsDetector class was updated
 * Theme Provider module was updated to 1.4.03
 
