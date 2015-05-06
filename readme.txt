@@ -3,7 +3,7 @@ Contributors: inveo
 Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, prestashop, integration, connector, store, sales, sell, shop, shopping, cart, checkout,
 Requires at least: 2.7
 Tested up to: 4.2.1
-Stable tag: 1.4.04
+Stable tag: 1.4.05
 License: LGPLv2.1
 License URI: http://www.gnu.org/licenses/lgpl-2.1.html
 
@@ -44,6 +44,12 @@ In a sub directory of the host web application (the application you want to inte
 1. The configuration screen of the plugin
 
 == Changelog ==
+
+= 1.4.05 =
+* PHP notice fixed
+* WebAppsDetector class was updated
+* Theme Provider module was updated to 1.4.03
+
 
 = 1.4.04 =
 * Support for update notices of the Theme Provider module was added

@@ -9,7 +9,7 @@
   * @project: Theme Provider
   * @date: 2015-03-28
   * @compatibility: PHP 5 >= 5.0.0
-  * @version: 1.1.1
+  * @version: 1.1.2
   */
 class WebAppsDetector
 {
@@ -35,7 +35,7 @@ class WebAppsDetector
 						array(
 							'name' => 'PrestaShop',
 							'abbr' => 'PS',
-							'latest' => '1.4.00',
+							'latest' => '1.4.03',
 							'path' => 'modules/psthemeprovider',
 							'files' => array('config/settings.inc.php', 'config/defines.inc.php')
 						)
