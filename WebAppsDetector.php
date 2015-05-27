@@ -35,7 +35,7 @@ class WebAppsDetector
 						array(
 							'name' => 'PrestaShop',
 							'abbr' => 'PS',
-							'latest' => '1.4.03',
+							'latest' => '1.4.06',
 							'path' => 'modules/psthemeprovider',
 							'files' => array('config/settings.inc.php', 'config/defines.inc.php')
 						)
