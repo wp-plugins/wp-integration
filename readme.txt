@@ -23,6 +23,8 @@ Features:
 * Editing of the WordPress or PrestaShop template files not required
 * Produces a valid (X)HTML source code
 
+Support thread (PrestaShop): https://www.prestashop.com/forums/topic/432988-free-module-wordpress-blog-integration-to-prestashop-13141516/?view=getlastpost
+
 == Installation ==
 
 1. Install the plugin as you always install them, either by uploading it via FTP or by using the "Add Plugin" function of the WordPress.
