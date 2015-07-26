@@ -10,7 +10,7 @@
  * Plugin Name: WP Integration
  * Plugin URI: http://www.inveostore.com
  * Description: Integrates Wordpress to any application with just one simple click.
- * Version: 1.4.08
+ * Version: 1.4.09
  * Author: Inveo s.r.o.
  * Author URI: http://www.inveostore.com
  * License: LGPLv2.1
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'WebAppsDetector.php');
 WebAppsDetector::initStatic(dirname(dirname(dirname(dirname(__FILE__)))));
 
 define('THEMEPROVIDER_CONN_LOADED', true);
-define('THEMEPROVIDER_CONN_VERSION', '1.4.08');
+define('THEMEPROVIDER_CONN_VERSION', '1.4.09');
 define('THEMEPROVIDER_CONN_REQVERSION', '1.3.00');
 define('THEMEPROVIDER_CONN_APP', 'WordPress');
 define('THEMEPROVIDER_CONN_APPABBR', 'WP');
@@ -46,7 +46,10 @@ if(defined('THEMEPROVIDER_INIT'))
 				public static function init($parseHtml)
 				{
 					$options = Wpcon::getOptions();
-					if(parent::$__revision < 3 || empty($options['apikey']))
+					if(parent::$__revision < 3)
+						return false;
+						
+					if(parent::$__revision < 4 && empty($options['apikey']))
 						return false;
 
 					$path = dirname(dirname($_SERVER['SCRIPT_NAME']));
@@ -112,7 +115,7 @@ if (is_admin()) // admin actions
 						else
 						{
 							$options = Wpcon::getOptions();
-							if(empty($options['apikey']))
+							if(empty($options['apikey']) && version_compare(THEMEPROVIDER_VERSION, '1.4.09', '<'))
 							{
 								add_action('admin_notices', array('Wpcon', 'no_apikey'));
 							}
@@ -273,13 +276,13 @@ class Wpcon {
 		// get_current_screen() since WP 3.1
 		if(version_compare(get_bloginfo('version'), '3.3', '>='))
 		{
-			$overview = '<p>' . sprintf(__('API security key is required, otherwise the %1$s integration to %2$s will not work.</p>', 'wpcon'), THEMEPROVIDER_CONN_APP, WebAppsDetector::getName()) .
+			$overview = '<p>' . sprintf(__('<i>API security key</i> is required, otherwise the %1$s integration to %2$s will not work (required up to the Theme Provider module version 1.4.09).</p>', 'wpcon'), THEMEPROVIDER_CONN_APP, WebAppsDetector::getName()) .
 			'<p>' . __('If you are in doubts about the Mode to choose, we recommend going with the Direct cache access mode.', 'wpcon') . '</p>' .
 			'<p>' . __('You must click the Save Changes button at the bottom of the screen for the new settings to come into effect.', 'wpcon');
 			
 			$about = '<p>'.__('Inveo can create a fast, secure and highly reliable ecommerce site with a high degree of variability, or a user-friendly website featuring modern graphic design that will enhance your prestige.', 'wpcon') . '</p>'.
-			'<p>'.__('copyright', 'wpcon').' (c) 2012-'.date('Y').' Inveo s.r.o., <a href="http://www.inveoglobal.com/">www.inveoglobal.com</a></p>'.
-			'<p>'.__('You can find more plugins and modules at', 'wpcon').' <a href="http://www.inveostore.com/">www.inveostore.com</a>.</p>';
+			'<p>'.__('copyright', 'wpcon').' (c) 2012-'.date('Y').' Inveo s.r.o., <a href="http://www.inveo.us/">www.inveo.us</a></p>'.
+			'<p>'.__('You can find more plugins and modules at', 'wpcon').' <a href="http://www.inveostore.com/">www.inveostore.com</a></p>';
 
 			get_current_screen()->add_help_tab(
 							array(
@@ -596,7 +599,7 @@ submit_button();
 
 <p style="text-align: right">
 copyright &copy; 2012-<?php echo date('Y'); ?> Inveo s.r.o.
-<br /><?php _e('Modules &amp; plugins:', 'wpcon'); ?> <a href="http://www.inveostore.com">www.inveostore.com</a> | <?php _e('eCommerce Services:', 'wpcon'); ?> <a href="http://www.inveoglobal.com">www.inveoglobal.com</a>
+<br /><?php _e('Modules &amp; plugins:', 'wpcon'); ?> <a href="http://www.inveostore.com">www.inveostore.com</a> | <?php _e('eCommerce Services:', 'wpcon'); ?> <a href="http://www.inveo.us">www.inveo.us</a>
 <br />
 <?php echo THEMEPROVIDER_CONN_NAME.' v'.THEMEPROVIDER_CONN_VERSION; ?>
 </p>
