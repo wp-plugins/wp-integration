@@ -10,7 +10,7 @@
  * Plugin Name: WP Integration
  * Plugin URI: http://www.inveostore.com
  * Description: Integrates Wordpress to any application with just one simple click.
- * Version: 1.4.09
+ * Version: 1.4.10
  * Author: Inveo s.r.o.
  * Author URI: http://www.inveostore.com
  * License: LGPLv2.1
@@ -19,7 +19,7 @@
 // Make sure we don't expose any info if called directly
 if(!function_exists('add_action'))
 {
-	echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
+	echo 'Hi there! I\'m just a plugin, not much I can do when called directly.';
 	exit();
 }
 
@@ -27,7 +27,7 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'WebAppsDetector.php');
 WebAppsDetector::initStatic(dirname(dirname(dirname(dirname(__FILE__)))));
 
 define('THEMEPROVIDER_CONN_LOADED', true);
-define('THEMEPROVIDER_CONN_VERSION', '1.4.09');
+define('THEMEPROVIDER_CONN_VERSION', '1.4.10');
 define('THEMEPROVIDER_CONN_REQVERSION', '1.3.00');
 define('THEMEPROVIDER_CONN_APP', 'WordPress');
 define('THEMEPROVIDER_CONN_APPABBR', 'WP');
@@ -35,7 +35,11 @@ define('THEMEPROVIDER_CONN_NAME', THEMEPROVIDER_CONN_APP.' integration');
 define('THEMEPROVIDER_CONN_NAME_ABBR', THEMEPROVIDER_CONN_APPABBR.' integration');
 
 if(WebAppsDetector::providerFound())
+{
+	ob_start();
 	require_once(WebAppsDetector::getProviderFile());
+	ob_clean();
+}
 
 if(defined('THEMEPROVIDER_INIT'))
 {
@@ -88,7 +92,7 @@ if (is_admin()) // admin actions
 	{
 		add_action('admin_init', array('Wpcon', 'admin'));
 		
-		if(WebAppsDetector::appFound() && WebAppsDetector::providerFound() && (basename($_SERVER['SCRIPT_NAME']) == 'plugins.php' || (isset($_GET['page']) && $_GET['page'] == 'wpcon_plugin')) && version_compare(THEMEPROVIDER_VERSION, WebAppsDetector::getLatest(), '<'))
+		if(WebAppsDetector::appFound() && WebAppsDetector::providerFound() && (basename($_SERVER['SCRIPT_NAME']) == 'plugins.php' || (isset($_GET['page']) && $_GET['page'] == 'wpcon_plugin')) && defined('THEMEPROVIDER_VERSION') && version_compare(THEMEPROVIDER_VERSION, WebAppsDetector::getLatest(), '<'))
 			add_action('admin_notices', array('Wpcon', 'update_found'));
 
 		if(isset($_GET['page']) && $_GET['page'] == 'wpcon_plugin')

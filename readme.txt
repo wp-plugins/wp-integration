@@ -2,8 +2,8 @@
 Contributors: inveo
 Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, prestashop, integration, connector, store, sales, sell, shop, shopping, cart, checkout,
 Requires at least: 2.7
-Tested up to: 4.2.3
-Stable tag: 1.4.09
+Tested up to: 4.2.4
+Stable tag: 1.4.10
 License: LGPLv2.1
 License URI: http://www.gnu.org/licenses/lgpl-2.1.html
 
@@ -46,6 +46,11 @@ In a sub directory of the host web application (the application you want to inte
 1. The configuration screen of the plugin
 
 == Changelog ==
+
+= 1.4.10 =
+* Warnings in certain situations were fixed
+* WebAppsDetector class was updated
+* Theme Provider module was updated to 1.4.10
 
 = 1.4.09 =
 * The requirement to enter the API security key has been removed (this was the most common step where users get stuck)
