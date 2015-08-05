@@ -9,7 +9,7 @@
   * @project: Theme Provider
   * @date: 2015-03-28
   * @compatibility: PHP 5 >= 5.0.0
-  * @version: 1.1.5
+  * @version: 1.1.6
   */
 class WebAppsDetector
 {
